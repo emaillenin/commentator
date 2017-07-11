@@ -1,0 +1,4 @@
+oauth.consumerKey=[your consumer key here]
+oauth.consumerSecret=[your consumer secret here]
+oauth.accessToken=[your access token here]
+oauth.accessTokenSecret=[your access token secret here]
