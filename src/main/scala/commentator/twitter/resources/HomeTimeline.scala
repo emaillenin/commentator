@@ -1,4 +1,4 @@
-package commentator.twitter.timeline
+package commentator.twitter.resources
 
 import akka.actor.{Actor, ActorSystem}
 import com.typesafe.scalalogging.LazyLogging
