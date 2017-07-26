@@ -7,7 +7,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.util.Random
 
-class StaticTweets(system: ActorSystem, tweetScheduler: TweetScheduler) extends LazyLogging {
+class StaticTweets(system: ActorSystem, tweetScheduler: TweetsQueue) extends LazyLogging {
   val messages: List[String] = List(
     "Want #Flipkart vouchers? Use your cricket knowledge and win vouchers: https://goo.gl/bPN1cF #WWC17",
     "Want #Flipkart vouchers? Use your cricket knowledge and win vouchers: https://goo.gl/bPN1cF #EngVSA",
