@@ -1,13 +1,14 @@
 package commentator.twitter.scheduler
 
-import akka.actor.ActorSystem
+import akka.actor.{ActorRef, ActorSystem}
 import com.typesafe.scalalogging.LazyLogging
+import commentator.actions.ScheduleTweet
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.util.Random
 
-class StaticTweets(system: ActorSystem, tweetScheduler: TweetsQueue) extends LazyLogging {
+class StaticTweets(system: ActorSystem, tweetScheduler: ActorRef) extends LazyLogging {
   val messages: List[String] = List(
     "Want #Flipkart vouchers? Use your cricket knowledge and win vouchers: https://goo.gl/bPN1cF #WWC17",
     "Want #Flipkart vouchers? Use your cricket knowledge and win vouchers: https://goo.gl/bPN1cF #EngVSA",
@@ -32,7 +33,7 @@ class StaticTweets(system: ActorSystem, tweetScheduler: TweetsQueue) extends Laz
   def randomTweets(): Unit = {
     val tweet = Random.shuffle(messages).head
     logger.info(s"Scheduling tweet: $tweet")
-    tweetScheduler.scheduleTweet(tweet)
+    tweetScheduler ! ScheduleTweet(tweet)
     system.scheduler.scheduleOnce(15 minutes) {
       randomTweets()
     }
