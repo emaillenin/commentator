@@ -18,7 +18,10 @@ class TweetsQueue(system: ActorSystem) extends Actor {
 
     case SendScheduledTweet =>
       // Schedule a tweet every 1 or 2 hours
-      system.actorOf(Props[TwitterClient]) ! StatusUpdateAction(scheduledTweets.dequeue)
+      if (scheduledTweets.nonEmpty) {
+        system.actorOf(Props[TwitterClient]) ! StatusUpdateAction(scheduledTweets.dequeue)
+      }
+
       system.scheduler.scheduleOnce(FiniteDuration(60 + Random.nextInt(60), MINUTES), self, SendScheduledTweet)
   }
 
