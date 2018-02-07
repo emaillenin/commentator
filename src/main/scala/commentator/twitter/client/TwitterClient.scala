@@ -5,8 +5,9 @@ import com.typesafe.scalalogging.LazyLogging
 import commentator.actions.StatusUpdateAction
 import commentator.factory.TwitterInstance
 import twitter4j.StatusUpdate
+import twitter4j.conf.Configuration
 
-class TwitterClient extends Actor with TwitterInstance with LazyLogging {
+class TwitterClient(implicit conf: Configuration) extends Actor with TwitterInstance with LazyLogging {
 
   override def receive: Receive = {
     case StatusUpdateAction(text) =>

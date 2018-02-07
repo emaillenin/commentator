@@ -1,23 +1,13 @@
 package commentator
 
-import akka.actor.{ActorSystem, Props}
-import akka.stream.ActorMaterializer
-import commentator.actions.{SendScheduledTweet, TrackFriends, TrackTrendingTags}
-import commentator.twitter.scheduler.{StaticTweetsSource, TweetsQueue}
-import commentator.twitter.resources.{Friends, HomeTimeline}
+import akka.actor.ActorSystem
 import com.typesafe.config.ConfigFactory
-import commentator.campaign.CampaignRunner
-import commentator.twitter.redis.Repository
 
 object Main extends App {
-  implicit val system = ActorSystem("commentator-system")
-  implicit val materializer = ActorMaterializer()
+  implicit val system: ActorSystem = ActorSystem("commentator-system")
 
-  val config = ConfigFactory.load
+  ConfigFactory.load.getObjectList("commentators").stream
+    .filter(_.toConfig.getBoolean("enabled"))
+    .forEach(commentator => new Commentator(commentator.toConfig, TwitterConfigFactory.fromConfig(commentator.toConfig.getConfig("twitter"))).startCommenting())
 
-  //  system.actorOf(Props(classOf[Friends], system)) ! TrackFriends(config.getString("commentator.name"))
-//  system.actorOf(Props(classOf[HomeTimeline], system)) ! TrackTrendingTags(config.getString("commentator.name"))
-  private val tweetsQueue = system.actorOf(Props(classOf[TweetsQueue], system))
-  tweetsQueue ! SendScheduledTweet
-  new CampaignRunner(new Repository(), tweetsQueue).runCampaign("https://private-8343-duggout.apiary-mock.com/commentator/comments.json", config.getString("commentator.name"))
 }

@@ -1,7 +1,7 @@
 package commentator.twitter.redis
 
 import akka.actor.ActorSystem
-import commentator.factory.{RedisInstance, TwitterInstance}
+import commentator.factory.RedisInstance
 import commentator.twitter.resources.HomeTimeline
 
 class Repository(implicit system: ActorSystem) extends RedisInstance {
