@@ -7,5 +7,5 @@ Commentator
 
 To start the bot, 
 
-1. Copy `twitter4j.properties.sample` into `twitter4j.properties` and update your Twitter OAuth keys.
+1. Modify `application.conf` to include your Twitter OAuth keys. Add/Remove Commentators as you wish in the config.
 2. "sbt run"
